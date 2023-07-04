@@ -1,28 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\willi\\source\\repos\\api\\api\\api.csproj": {}
+    "/Users/williamprakash/Desktop/C# projects/api/api/api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\willi\\source\\repos\\api\\api\\api.csproj": {
+    "/Users/williamprakash/Desktop/C# projects/api/api/api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\willi\\source\\repos\\api\\api\\api.csproj",
+        "projectUniqueName": "/Users/williamprakash/Desktop/C# projects/api/api/api.csproj",
         "projectName": "api",
-        "projectPath": "C:\\Users\\willi\\source\\repos\\api\\api\\api.csproj",
-        "packagesPath": "C:\\Users\\willi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\willi\\source\\repos\\api\\api\\obj\\",
+        "projectPath": "/Users/williamprakash/Desktop/C# projects/api/api/api.csproj",
+        "packagesPath": "/Users/williamprakash/.nuget/packages/",
+        "outputPath": "/Users/williamprakash/Desktop/C# projects/api/api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\willi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/williamprakash/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
+          "/usr/local/share/dotnet/sdk/7.0.304/Sdks/Microsoft.NET.Sdk.Web/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -65,7 +63,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.304/RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,3 +1,5 @@
+using api.DAL;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -19,6 +21,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+// grab database authentication
+Authenticate auth = new Authenticate();
+Dictionary<string,string>? credentials = auth.OpenAuthFile();
+// connect to MongoDB
+
 
 app.MapControllers();
 
