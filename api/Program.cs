@@ -12,11 +12,15 @@ builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
+// Configure routing format
+app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    //app.UseSwagger();
-    //app.UseSwaggerUI();
+    
 }
 
 // for static files

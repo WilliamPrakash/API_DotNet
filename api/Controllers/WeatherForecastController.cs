@@ -18,6 +18,7 @@ namespace api.Controllers
             _logger = logger;
         }
 
+        // route: https://localhost:7217/WeatherForecast
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
