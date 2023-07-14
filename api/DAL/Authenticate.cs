@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 
-
 namespace api.DAL
 {
 	public class Authenticate
@@ -18,6 +17,9 @@ namespace api.DAL
 				string jsonToParse = File.ReadAllText(path);
 				Dictionary<string,string>? dict = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonToParse);
 				Console.WriteLine(dict);
+
+				
+
 				return dict;
 			}
 			Dictionary<string, string>? empty = new Dictionary<string, string>();
