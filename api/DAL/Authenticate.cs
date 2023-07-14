@@ -1,26 +1,40 @@
 ﻿using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace api.DAL
 {
 	public class Authenticate
 	{
-		// do anything in the constructor?
+		public string pwd = "";
 
-		// currently grabbing all key-value pairs in credentials.json
-		public Dictionary<string,string>? OpenAuthFile()
+        public Dictionary<string,string>? OpenAuthFile()
 		{
-			// TODO: add check for OS type, filepath will change
 			Console.WriteLine("authenticate");
 			string path = @"/Users/williamprakash/Desktop/credentials.json";
 			if (File.Exists(path))
 			{
 				string jsonToParse = File.ReadAllText(path);
 				Dictionary<string,string>? dict = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonToParse);
-				Console.WriteLine(dict);
 
-				
+				// Grab password from local file
+				if (dict.Count != 0)
+				{
+                    for (int i = 0; i < dict.Keys.Count; i++)
+                    {
+                        if (dict.ElementAt(i).Key == "MongoDB")
+                        {
+							pwd = dict.ElementAt(i).Value;
+                        }
+                    }
+                }
 
-				return dict;
+				// Configure Mongo connection string with password
+				var mongoConnStr = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings:MongoDB").Value;
+				var mongoConnStrPwd = mongoConnStr.Replace("<password>", pwd);
+				DBConnect x = new DBConnect();
+				x.GetMongoDBInstance(mongoConnStrPwd);
+
+                return dict;
 			}
 			Dictionary<string, string>? empty = new Dictionary<string, string>();
 			return empty;
