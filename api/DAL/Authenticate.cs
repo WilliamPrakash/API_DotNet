@@ -30,7 +30,7 @@ namespace api.DAL
 
 				// Configure Mongo connection string with password
 				var mongoConnStr = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings:MongoDB").Value;
-				var mongoConnStrPwd = mongoConnStr.Replace("<password>", pwd);
+				var mongoConnStrPwd = mongoConnStr.Replace("password", pwd);
 				DBConnect x = new DBConnect();
 				x.GetMongoDBInstance(mongoConnStrPwd);
 

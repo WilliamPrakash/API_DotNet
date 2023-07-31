@@ -13,7 +13,7 @@ namespace api.DAL
 
 		public void GetMongoDBInstance(string mongoConnStr)
 		{
-			var client = new MongoClient(mongoConnStr);
+            var client = new MongoClient(mongoConnStr);
 			var db = client.GetDatabase("MainDB");
 			Console.WriteLine(db);
 		}
