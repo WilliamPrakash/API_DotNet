@@ -1,4 +1,5 @@
 ﻿using System;
+using api.Models;
 using MongoDB.Driver;
 
 namespace api.DAL
@@ -14,8 +15,15 @@ namespace api.DAL
 		public void GetMongoDBInstance(string mongoConnStr)
 		{
             var client = new MongoClient(mongoConnStr);
+			// Database
 			var db = client.GetDatabase("MainDB");
-			Console.WriteLine(db);
+            // Collection
+            MongoClientSettings settings = new MongoClientSettings();
+			var collection = db.GetCluster("Clients");
+            var filter = Builders<Client>.Filter.Empty;
+			var clients = db.Find(filter).FirstOrDefault();
+
+            Console.WriteLine(db);
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Runtime.InteropServices;
+using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 
 namespace api.DAL
@@ -10,7 +11,16 @@ namespace api.DAL
         public Dictionary<string,string>? OpenAuthFile()
 		{
 			Console.WriteLine("authenticate");
-			string path = @"/Users/williamprakash/Desktop/credentials.json";
+            string path = "";
+            // Path depends on which computer I'm working on
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+			{
+				path = "@/Users/williamprakash/Desktop/credentials.json";
+			}
+			else if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+                path = "C:/Users/willi/Downloads/credentials.json";
+            }
 			if (File.Exists(path))
 			{
 				string jsonToParse = File.ReadAllText(path);
