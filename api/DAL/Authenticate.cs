@@ -15,7 +15,7 @@ namespace api.DAL
             // Path depends on which computer I'm working on
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
 			{
-				path = "@/Users/williamprakash/Desktop/credentials.json";
+				path = @"/Users/williamprakash/Desktop/credentials.json";
 			}
 			else if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			{

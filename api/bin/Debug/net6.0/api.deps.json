@@ -8,28 +8,29 @@
     ".NETCoreApp,Version=v6.0": {
       "api/1.0.0": {
         "dependencies": {
+          "AWSSDK.SecurityToken": "3.7.201.12",
           "MongoDB.Driver": "2.20.0"
         },
         "runtime": {
           "api.dll": {}
         }
       },
-      "AWSSDK.Core/3.7.100.14": {
+      "AWSSDK.Core/3.7.200.16": {
         "runtime": {
           "lib/netcoreapp3.1/AWSSDK.Core.dll": {
             "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.7.100.14"
+            "fileVersion": "3.7.200.16"
           }
         }
       },
-      "AWSSDK.SecurityToken/3.7.100.14": {
+      "AWSSDK.SecurityToken/3.7.201.12": {
         "dependencies": {
-          "AWSSDK.Core": "3.7.100.14"
+          "AWSSDK.Core": "3.7.200.16"
         },
         "runtime": {
           "lib/netcoreapp3.1/AWSSDK.SecurityToken.dll": {
             "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.7.100.14"
+            "fileVersion": "3.7.201.12"
           }
         }
       },
@@ -79,7 +80,7 @@
       },
       "MongoDB.Driver.Core/2.20.0": {
         "dependencies": {
-          "AWSSDK.SecurityToken": "3.7.100.14",
+          "AWSSDK.SecurityToken": "3.7.201.12",
           "DnsClient": "1.6.1",
           "Microsoft.Extensions.Logging.Abstractions": "2.0.0",
           "MongoDB.Bson": "2.20.0",
@@ -162,19 +163,19 @@
       "serviceable": false,
       "sha512": ""
     },
-    "AWSSDK.Core/3.7.100.14": {
+    "AWSSDK.Core/3.7.200.16": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-gnEgxBlk4PFEfdPE8Lkf4+D16MZFYSaW7/o6Wwe5e035QWUkTJX0Dn4LfTCdV5QSEL/fOFxu+yCAm55eIIBgog==",
-      "path": "awssdk.core/3.7.100.14",
-      "hashPath": "awssdk.core.3.7.100.14.nupkg.sha512"
+      "sha512": "sha512-HCn1gsiuHiPZxZyoRdUCvGFCVRI+AnkV5NoLP0HuKAvR/HIjPPnHn+Ey17FVd0t7v+VuNGEGdmK9WVpubckihA==",
+      "path": "awssdk.core/3.7.200.16",
+      "hashPath": "awssdk.core.3.7.200.16.nupkg.sha512"
     },
-    "AWSSDK.SecurityToken/3.7.100.14": {
+    "AWSSDK.SecurityToken/3.7.201.12": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-dGCVuVo0CFUKWW85W8YENO+aREf8sCBDjvGbnNvxJuNW4Ss+brEU9ltHhq2KfZze2VUNK1/wygbPG1bmbpyXEw==",
-      "path": "awssdk.securitytoken/3.7.100.14",
-      "hashPath": "awssdk.securitytoken.3.7.100.14.nupkg.sha512"
+      "sha512": "sha512-27kaZflQrV89wuhyTDdRQyVjJhGwt/HgP/J+MfW/LA6owFexMtRYhVpZY4sI1Kh179lCxx4VP1qNkUmas2QNCQ==",
+      "path": "awssdk.securitytoken/3.7.201.12",
+      "hashPath": "awssdk.securitytoken.3.7.201.12.nupkg.sha512"
     },
     "DnsClient/1.6.1": {
       "type": "package",
