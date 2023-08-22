@@ -1,5 +1,4 @@
-﻿using System;
-using api.Models;
+﻿using api.Models;
 using MongoDB.Driver;
 
 namespace api.DAL
@@ -13,9 +12,15 @@ namespace api.DAL
 			var db = client.GetDatabase("MainDB");
             // Collection
             var clientCollection = db.GetCollection<Client>("TestCluster");
+			Client test = new Client();
+            test = clientCollection.Find(x => x.name == "will");
 
+			//I think I need to shove the document into a Client model
 
-            Console.WriteLine(clientCollection);
+            //var filter = Builders<BsonDocument>.Filter.Eq(x => x.age, 32);
+            //var documents = clientCollection.Find(filter);
+
+            Console.WriteLine(document);
 		}
 	}
 }
