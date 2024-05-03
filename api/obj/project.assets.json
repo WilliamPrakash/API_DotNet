@@ -760,11 +760,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/williamprakash/Desktop/C# projects/api/api/api.csproj",
+      "projectUniqueName": "/Users/williamprakash/Desktop/API_.NET/api/api.csproj",
       "projectName": "api",
-      "projectPath": "/Users/williamprakash/Desktop/C# projects/api/api/api.csproj",
+      "projectPath": "/Users/williamprakash/Desktop/API_.NET/api/api.csproj",
       "packagesPath": "/Users/williamprakash/.nuget/packages/",
-      "outputPath": "/Users/williamprakash/Desktop/C# projects/api/api/obj/",
+      "outputPath": "/Users/williamprakash/Desktop/API_.NET/api/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/williamprakash/.nuget/NuGet/NuGet.Config"

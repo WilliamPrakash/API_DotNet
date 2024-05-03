@@ -1,4 +1,5 @@
 ﻿using api.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace api.DAL
@@ -7,20 +8,24 @@ namespace api.DAL
 	{
 		public void GetMongoDBInstance(string mongoConnStr)
 		{
-            var client = new MongoClient(mongoConnStr);
-			// Database
-			var db = client.GetDatabase("MainDB");
-            // Collection
-            var clientCollection = db.GetCollection<Client>("TestCluster");
-			Client test = new Client();
-            test = clientCollection.Find(x => x.name == "will");
+			//TestCluster/MainDB.Clients
+            MongoClient client = new MongoClient(mongoConnStr);
+			IMongoDatabase db = client.GetDatabase("MainDB");
+            var clientCollection = db.GetCollection<Client>("Clients");
+			//method 1
+			var filter1 = Builders<Client>.Filter.Where(x => x.name == "Will");
+            var results1 = clientCollection.Find(filter1);
 
-			//I think I need to shove the document into a Client model
+			//method 2
+            var filter2 = Builders<Client>.Filter.Eq(y => y.name, "Will");
+            // Error: "Unable to authenticate using sasl protocol mechanism..."
+            //https://stackoverflow.com/questions/44513786/error-on-mongodb-authentication
+            var firstDocument = clientCollection.Find(new BsonDocument()).FirstOrDefault();
+			Console.WriteLine(firstDocument.ToString());
+			//var results = clientCollection.Find(x => x.name == "Will").ToList<Client>;
 
-            //var filter = Builders<BsonDocument>.Filter.Eq(x => x.age, 32);
-            //var documents = clientCollection.Find(filter);
 
-            Console.WriteLine(document);
+            Console.WriteLine("x");
 		}
 	}
 }
