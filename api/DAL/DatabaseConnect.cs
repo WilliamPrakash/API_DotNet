@@ -8,14 +8,14 @@ namespace api.DAL
 	public class DatabaseConnect
 	{
         // Initialize collection (Mongo)
-        public IMongoCollection<Client>? _clientCollection;
+        public IMongoCollection<Client_Mongo>? _clientCollection;
 
         public void MongoDBConnect(string mongoConnStr)
 		{
 			// Create client, connect to DB, connect to collection
             MongoClient client = new MongoClient(mongoConnStr);
 			IMongoDatabase db = client.GetDatabase("MainDB");
-            _clientCollection = db.GetCollection<Client>("TestCluster");
+            _clientCollection = db.GetCollection<Client_Mongo>("TestCluster");
 
 			var test = _clientCollection.Find(x => x.name == "will").ToList();
 
@@ -26,6 +26,9 @@ namespace api.DAL
 		{
 			using (SqlConnection connection = new SqlConnection(sqlConnStr))
 			{
+				// Create a list of Client_SQLs
+				List<Client_SQL> clients = new List<Client_SQL>();
+
                 // Source: https://stackoverflow.com/questions/21709305/how-to-directly-execute-sql-query-in-c
                 SqlCommand command = new SqlCommand("select * from Master.dbo.Contacts", connection);
 				connection.Open();
@@ -34,10 +37,12 @@ namespace api.DAL
 				{
 					while (reader.Read())
 					{
-						Console.WriteLine(reader.GetInt32(0));
-						Console.WriteLine(reader.GetString(1));
-						Console.WriteLine(reader.GetString(2));
-                        Console.WriteLine(reader.GetString(3));
+						Client_SQL client = new Client_SQL();
+						client.Id = reader.GetInt32(0);
+                        client.Name = reader.GetString(1);
+                        client.Email = reader.GetString(2);
+						client.Occupation = reader.GetString(3);
+						clients.Add(client);
                     }
 				}
 				finally

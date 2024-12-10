@@ -11,13 +11,13 @@ namespace api.DAL
 			//TestCluster/MainDB.Clients
             MongoClient client = new MongoClient(mongoConnStr);
 			IMongoDatabase db = client.GetDatabase("MainDB");
-            var clientCollection = db.GetCollection<Client>("Clients");
+            var clientCollection = db.GetCollection<Client_Mongo>("Clients");
 			//method 1
-			var filter1 = Builders<Client>.Filter.Where(x => x.name == "Will");
+			var filter1 = Builders<Client_Mongo>.Filter.Where(x => x.name == "Will");
             var results1 = clientCollection.Find(filter1);
 
 			//method 2
-            var filter2 = Builders<Client>.Filter.Eq(y => y.name, "Will");
+            var filter2 = Builders<Client_Mongo>.Filter.Eq(y => y.name, "Will");
             // Error: "Unable to authenticate using sasl protocol mechanism..."
             //https://stackoverflow.com/questions/44513786/error-on-mongodb-authentication
             var firstDocument = clientCollection.Find(new BsonDocument()).FirstOrDefault();

@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\api",
-    "\\api\\DAL"
+    "\\api\\Controllers",
+    "\\api\\DAL",
+    "\\api\\Models"
   ],
-  "SelectedNode": "\\api.sln",
+  "SelectedNode": "\\api\\api.sln",
   "PreviewInSolutionExplorer": false
 }

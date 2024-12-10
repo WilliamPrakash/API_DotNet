@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace api.Models
 {
-	public class Client
+	public class Client_Mongo
 	{
 		[BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
