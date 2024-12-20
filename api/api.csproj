@@ -11,9 +11,6 @@
     <None Remove="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Remove="wwwroot\" />
     <Content Remove="wwwroot\index.html" />
   </ItemGroup>

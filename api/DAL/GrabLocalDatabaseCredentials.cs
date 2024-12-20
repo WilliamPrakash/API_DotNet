@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace api.DAL
 {
-	public class GrabDatabaseCredentials
+	public class GrabLocalDatabaseCredentials
 	{
 		public string mongoPwd = "";
         public string sqlConnStr = "";
