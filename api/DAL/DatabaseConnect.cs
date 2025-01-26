@@ -1,4 +1,5 @@
 ﻿using api.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Data.SqlClient;
 
@@ -43,22 +44,47 @@ namespace api.DAL
             if (false)
             {
                 var mongoConnStr = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings:MongoDB").Value;
-                mongoConnStr = mongoConnStr.Replace("<password>", mongoPwd);
-                // mongodb+srv://willprakash:Jdq_31aFINISH@testcluster.y2gbcvh.mongodb.net/?retryWrites=true&w=majority
-                //dbConn.MongoDBConnect(mongoConnStr);
-                MongoDBConnect("mongodb+srv://willprakash:Jdq_31aFINISH@testcluster.y2gbcvh.mongodb.net/?authSource=admin");
+                mongoConnStr = mongoConnStr.Replace("<db_password>", mongoPwd);
+                MongoDBConnect(mongoConnStr);
+            }
+
+            // SQL Server (Local)
+            using (SqlConnection connection = new SqlConnection(sqlConnStr))
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("select * from Master.dbo.Employees", connection);
+                SqlDataReader reader = cmd.ExecuteReader();
+                try
+                {
+                    while (reader.Read())
+                    {
+                        Console.WriteLine(reader["id"] + " " + reader["Name"]);
+                    }
+                }
+                finally
+                {
+                    reader.Close();
+                }
             }
 
         }
 
+        /* NOT WORKING */
         public void MongoDBConnect(string mongoConnStr)
 		{
-			// Create client, connect to DB, connect to collection
-            MongoClient client = new MongoClient(mongoConnStr);
-			IMongoDatabase db = client.GetDatabase("MainDB");
-            _clientCollection = db.GetCollection<Client_Mongo>("TestCluster");
+            // Create Client, connect to DB, connect to Collection
+            var settings = MongoClientSettings.FromConnectionString(mongoConnStr);
+            //settings.ServerApi = new ServerApi(ServerApiVersion.V1);
 
-			var test = _clientCollection.Find(x => x.name == "will").ToList();
+            MongoClient client = new MongoClient(mongoConnStr);
+            
+            var dbList = client.ListDatabases().ToList();
+            //client.Settings.Credential = new MongoCredential( "willprakash";
+			IMongoDatabase db = client.GetDatabase("MainDB");
+            db.RunCommand<BsonDocument>(new BsonDocument("ping",1));
+            _clientCollection = db.GetCollection<Client_Mongo>("Clients");
+
+			var test = _clientCollection.Find(x => x.name == "Will").ToList();
 
             Console.WriteLine(test);
 		}

@@ -475,3 +475,4 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+/api/api.csproj

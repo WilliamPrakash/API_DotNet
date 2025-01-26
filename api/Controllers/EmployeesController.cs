@@ -2,21 +2,24 @@
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
-using System.Security.Cryptography.X509Certificates;
+using Newtonsoft.Json;
 
 namespace api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]/[action]")]
     public class EmployeesController : Controller
     {
-        [HttpGet]
-        public void GetEmployees()
+
+
+        [HttpGet(Name = "GetEmployees")]
+        public ActionResult<List<Employee_SQL>> GetEmployees()
         {
             SqlConnection connection = DatabaseConnect.SQLServerConnect(DatabaseConnect.sqlConnStr);
 
             // Create a list of Client_SQLs
             List<Employee_SQL> employees = new List<Employee_SQL>();
+            string employeesJson = "";
 
             // Source: https://stackoverflow.com/questions/21709305/how-to-directly-execute-sql-query-in-c
             SqlCommand command = new SqlCommand("select * from Master.dbo.Employees", connection);
@@ -31,8 +34,11 @@ namespace api.Controllers
                     client.Name = reader.GetString(1);
                     client.Email = reader.GetString(2);
                     client.Occupation = reader.GetString(3);
-                    employees.Add(client);
+                    employees.Add(client); 
                 }
+                //employeesJson = JsonConvert.SerializeObject(employees);
+                //return employeesJson;
+                return employees;
             }
             finally
             {
@@ -40,9 +46,7 @@ namespace api.Controllers
             }
         }
 
-        /*public IActionResult Index()
-        {
-            return View();
-        }*/
+
+
     }
 }
