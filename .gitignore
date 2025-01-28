@@ -476,3 +476,13 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 /api/api.csproj
+/api/bin/Debug/net6.0/api.dll
+/.vs/api/v17/.suo
+/api/bin/Debug/net6.0/api.pdb
+/api/obj/Debug/net6.0/api.AssemblyInfoInputs.cache
+/api/obj/Debug/net6.0/api.AssemblyInfo.cs
+/.vs/api/v17/.suo
+/api/bin/Debug/net6.0/api.dll
+/api/bin/Debug/net6.0/api.pdb
+/api/obj/Debug/net6.0/api.AssemblyInfoInputs.cache
+/api/obj/Debug/net6.0/api.AssemblyInfo.cs

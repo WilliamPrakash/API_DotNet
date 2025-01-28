@@ -39,7 +39,7 @@ namespace api.DAL
                 }
             }
 
-            // MongoDB
+            // MongoDB ***NOT WORKING
             //if (mongoPwd != "")
             if (false)
             {
@@ -58,7 +58,7 @@ namespace api.DAL
                 {
                     while (reader.Read())
                     {
-                        Console.WriteLine(reader["id"] + " " + reader["Name"]);
+                        Console.WriteLine(reader["id"] + " " + reader["Name"] + " " + reader["Email"] + " " + reader["Occupation"]);
                     }
                 }
                 finally

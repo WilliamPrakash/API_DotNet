@@ -3,6 +3,7 @@ using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using Newtonsoft.Json;
+using MongoDB.Driver.Core.Configuration;
 
 namespace api.Controllers
 {
@@ -10,7 +11,10 @@ namespace api.Controllers
     [Route("api/[controller]/[action]")]
     public class EmployeesController : Controller
     {
-
+        /* Should I move the sql connection outside of every call?
+           Or should I put it into a function that gets called w/ every HTTP call
+           ^^ this seems safe but also super slow...
+         */
 
         [HttpGet(Name = "GetEmployees")]
         public ActionResult<List<Employee_SQL>> GetEmployees()
@@ -45,6 +49,53 @@ namespace api.Controllers
                 reader.Close();
             }
         }
+
+        [HttpPut(Name = "CreateEmployee")]
+        // Should I break employee into separate url-based args and then create an Employee_SQL object in the function body?
+        public HttpResponseMessage CreateEmployee(int id, string name, string email, string occupation)
+        {
+            // Create employee object
+            Employee_SQL employee = new Employee_SQL();
+            employee.Id = id;
+            employee.Name = name;
+            employee.Email = email;
+            employee.Occupation = occupation;
+            //Console.WriteLine(employee);
+
+            SqlConnection connection = DatabaseConnect.SQLServerConnect(DatabaseConnect.sqlConnStr);
+
+            /// Source: https://stackoverflow.com/questions/19956533/sql-insert-query-using-c-sharp
+            using (connection)
+            {
+                String query = "INSERT INTO Master.dbo.Employees (id,Name,Email,Occupation) VALUES (@id,@Name,@Email, @Occupation)";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id", employee.Id);
+                    command.Parameters.AddWithValue("@Name", employee.Name);
+                    command.Parameters.AddWithValue("@Email", employee.Email);
+                    command.Parameters.AddWithValue("@Occupation", employee.Occupation);
+
+                    connection.Open();
+                    int result = command.ExecuteNonQuery();
+
+                    // Check Error
+                    if (result < 0)
+                        Console.WriteLine("Error inserting data into Database!");
+                    
+                    connection.Close();
+                }
+            }
+            ///
+
+            return new HttpResponseMessage(new System.Net.HttpStatusCode()); // OK
+        }
+
+        /*[HttpPost(Name = "CreateEmployee")]
+        public Task<ActionResult<Employee_SQL>> CreateEmployee()
+        {
+
+        }*/
 
 
 
