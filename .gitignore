@@ -486,3 +486,16 @@ $RECYCLE.BIN/
 /api/bin/Debug/net6.0/api.pdb
 /api/obj/Debug/net6.0/api.AssemblyInfoInputs.cache
 /api/obj/Debug/net6.0/api.AssemblyInfo.cs
+/api/obj/project.assets.json
+/api/obj/project.nuget.cache
+/.vs/api/v17/.futdcache.v2
+/.vs/ProjectEvaluation/api.metadata.v7.bin
+/.vs/ProjectEvaluation/api.projects.v7.bin
+/.vs/api/DesignTimeBuild/.dtbcache.v2
+/.vs/api/v17/.futdcache.v2
+/.vs/ProjectEvaluation/api.metadata.v7.bin
+/.vs/ProjectEvaluation/api.projects.v7.bin
+/api/obj/api.csproj.nuget.dgspec.json
+/api/obj/api.csproj.nuget.g.props
+/api/obj/project.assets.json
+/api/obj/project.nuget.cache

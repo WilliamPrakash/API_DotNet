@@ -2,8 +2,8 @@
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
-using Newtonsoft.Json;
-using MongoDB.Driver.Core.Configuration;
+//using Newtonsoft.Json;
+
 
 namespace api.Controllers
 {
@@ -13,8 +13,7 @@ namespace api.Controllers
     {
         /* Should I move the sql connection outside of every call?
            Or should I put it into a function that gets called w/ every HTTP call
-           ^^ this seems safe but also super slow...
-         */
+           ^^ this seems safe but also super slow... */
 
         [HttpGet(Name = "GetEmployees")]
         public ActionResult<List<Employee_SQL>> GetEmployees()
@@ -50,28 +49,29 @@ namespace api.Controllers
             }
         }
 
+        /* Getting args: https://stackoverflow.com/questions/25385559/rest-api-best-practices-args-in-query-string-vs-in-request-body
+            Usually the content body is used for the data that is supposed to be uploaded/downloaded to/from
+            the server ,and the query parameters are used to specify the exact data requested. */
         [HttpPut(Name = "CreateEmployee")]
-        // Should I break employee into separate url-based args and then create an Employee_SQL object in the function body?
-        public HttpResponseMessage CreateEmployee(int id, string name, string email, string occupation)
+        public HttpResponseMessage CreateEmployee(string name, string email, string occupation)
         {
             // Create employee object
             Employee_SQL employee = new Employee_SQL();
-            employee.Id = id;
+            //employee.Id = id;
             employee.Name = name;
             employee.Email = email;
             employee.Occupation = occupation;
-            //Console.WriteLine(employee);
 
             SqlConnection connection = DatabaseConnect.SQLServerConnect(DatabaseConnect.sqlConnStr);
 
             /// Source: https://stackoverflow.com/questions/19956533/sql-insert-query-using-c-sharp
             using (connection)
             {
-                String query = "INSERT INTO Master.dbo.Employees (id,Name,Email,Occupation) VALUES (@id,@Name,@Email, @Occupation)";
+                String query = "INSERT INTO Master.dbo.Employees (Name,Email,Occupation) VALUES (@Name,@Email, @Occupation)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@id", employee.Id);
+                    //command.Parameters.AddWithValue("@id", employee.Id);
                     command.Parameters.AddWithValue("@Name", employee.Name);
                     command.Parameters.AddWithValue("@Email", employee.Email);
                     command.Parameters.AddWithValue("@Occupation", employee.Occupation);
@@ -86,13 +86,11 @@ namespace api.Controllers
                     connection.Close();
                 }
             }
-            ///
-
             return new HttpResponseMessage(new System.Net.HttpStatusCode()); // OK
         }
 
-        /*[HttpPost(Name = "CreateEmployee")]
-        public Task<ActionResult<Employee_SQL>> CreateEmployee()
+        /*[HttpPost(Name = "UpdateEmployee")]
+        public Task<ActionResult<Employee_SQL>> UpdateEmployee()
         {
 
         }*/
