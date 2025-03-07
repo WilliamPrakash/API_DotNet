@@ -8,16 +8,16 @@ namespace api.DAL
 {
 	public class DatabaseConnect
 	{
-        // Database Info
         Dictionary<string, string>? localCredentials;
         public static string sqlConnStr = "";
+        private static string sqlConnStr_Win = "";
+        private static string sqlConnStr_Mac = "";
+        private static string mongoPwd = "";
         public IMongoCollection<Client_Mongo>? _clientCollection;
 
         // Constructor
         public DatabaseConnect()
         {
-            string mongoPwd = "";
-
             GrabLocalDatabaseCredentials creds = new GrabLocalDatabaseCredentials();
             localCredentials = creds.OpenLocalAuthFile();
 
@@ -28,31 +28,42 @@ namespace api.DAL
             {
                 for (int i = 0; i < localCredentials.Keys.Count; i++)
                 {
-                    if (localCredentials.ElementAt(i).Key == "MongoDB")
+                    switch (localCredentials.ElementAt(i).Key)
                     {
-                        mongoPwd = localCredentials.ElementAt(i).Value;
-                    }
-                    else if (localCredentials.ElementAt(i).Key == "SQLServer")
-                    {
-                        sqlConnStr = localCredentials.ElementAt(i).Value;
+                        case "MongoDB":
+                            mongoPwd = localCredentials.ElementAt(i).Value;
+                            break;
+                        case "SQLServer_Win":
+                            sqlConnStr_Win = localCredentials.ElementAt(i).Value;
+                            break;
+                        case "SQLServer_Mac":
+                            sqlConnStr_Mac = localCredentials.ElementAt(i).Value;
+                            break;
                     }
                 }
             }
 
             // MongoDB ***NOT WORKING
             //if (mongoPwd != "")
-            if (false)
+            /*if (false)
             {
                 var mongoConnStr = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings:MongoDB").Value;
                 mongoConnStr = mongoConnStr.Replace("<db_password>", mongoPwd);
                 MongoDBConnect(mongoConnStr);
+            }*/
+
+            // Check OS
+            sqlConnStr = sqlConnStr_Win;
+            if (System.Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                sqlConnStr = sqlConnStr_Mac;
             }
 
             // SQL Server (Local)
             using (SqlConnection connection = new SqlConnection(sqlConnStr))
             {
                 connection.Open();
-                SqlCommand cmd = new SqlCommand("select * from Master.dbo.Employees", connection);
+                SqlCommand cmd = new SqlCommand("select * from master.dbo.Employees", connection);
                 SqlDataReader reader = cmd.ExecuteReader();
                 try
                 {

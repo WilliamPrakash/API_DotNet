@@ -25,7 +25,7 @@ namespace api.Controllers
             string employeesJson = "";
 
             // Source: https://stackoverflow.com/questions/21709305/how-to-directly-execute-sql-query-in-c
-            SqlCommand command = new SqlCommand("select * from Master.dbo.Employees", connection);
+            SqlCommand command = new SqlCommand("select * from master.dbo.Employees", connection);
             connection.Open();
             SqlDataReader reader = command.ExecuteReader();
             try
