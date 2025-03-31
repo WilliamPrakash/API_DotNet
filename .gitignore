@@ -499,3 +499,4 @@ $RECYCLE.BIN/
 /api/obj/api.csproj.nuget.g.props
 /api/obj/project.assets.json
 /api/obj/project.nuget.cache
+/api/obj/api.csproj.nuget.g.targets

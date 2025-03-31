@@ -1,8 +1,7 @@
 ﻿using api.DAL;
 using api.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc;
-using System.Data.SqlClient;
-//using Newtonsoft.Json;
 
 
 namespace api.Controllers

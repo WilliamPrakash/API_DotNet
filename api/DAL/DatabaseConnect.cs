@@ -1,7 +1,7 @@
 ﻿using api.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 
 namespace api.DAL
