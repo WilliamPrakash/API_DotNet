@@ -38,8 +38,6 @@ namespace api.Controllers
                     client.Occupation = reader.GetString(3);
                     employees.Add(client); 
                 }
-                //employeesJson = JsonConvert.SerializeObject(employees);
-                //return employeesJson;
                 return employees;
             }
             finally
@@ -56,7 +54,6 @@ namespace api.Controllers
         {
             // Create employee object
             Employee_SQL employee = new Employee_SQL();
-            //employee.Id = id;
             employee.Name = name;
             employee.Email = email;
             employee.Occupation = occupation;
@@ -66,7 +63,7 @@ namespace api.Controllers
             /// Source: https://stackoverflow.com/questions/19956533/sql-insert-query-using-c-sharp
             using (connection)
             {
-                String query = "INSERT INTO Master.dbo.Employees (Name,Email,Occupation) VALUES (@Name,@Email, @Occupation)";
+                string query = "INSERT INTO Master.dbo.Employees (Name,Email,Occupation) VALUES (@Name,@Email, @Occupation)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -88,11 +85,71 @@ namespace api.Controllers
             return new HttpResponseMessage(new System.Net.HttpStatusCode()); // OK
         }
 
-        /*[HttpPost(Name = "UpdateEmployee")]
-        public Task<ActionResult<Employee_SQL>> UpdateEmployee()
+        [HttpPost(Name = "UpdateEmployee")]
+        public IActionResult UpdateEmployee(int id, string? nameNew, string? emailNew, string? occupationNew)
         {
+            try
+            {
+                // Find SQL object based on ID
+                SqlConnection connection = DatabaseConnect.SQLServerConnect(DatabaseConnect.sqlConnStr);
+                SqlCommand query = new SqlCommand("SELECT Id, Name, Email, Occupation " +
+                    "from master.dbo.Employees where Id = " + id.ToString(), connection);
+                Employee_SQL client = new Employee_SQL();
+                connection.Open();
+                SqlDataReader reader = query.ExecuteReader();
 
-        }*/
+                // Grab the employee record to update
+                while (reader.Read())
+                {
+                    client.Id = reader.GetInt32(0);
+                    client.Name = reader.GetString(1);
+                    client.Email = reader.GetString(2);
+                    client.Occupation = reader.GetString(3);
+                }
+                Console.WriteLine(client);
+
+                /* Instances of the String (alias "string") class are objects (reference type),
+                    and can't be checked w/ Nullable<T>.HasValue. */
+                if (!string.IsNullOrEmpty(nameNew))
+                {
+                    client.Name = nameNew;
+                }
+                if (!string.IsNullOrEmpty(emailNew))
+                {
+                    client.Email = emailNew;
+                }
+                if (!string.IsNullOrEmpty(occupationNew))
+                {
+                    client.Occupation = occupationNew;
+                }
+
+                // Update the record in the DB
+                string updateQuery = "update master.dbo.Employees " +
+                    "set Name = @Name, Email = @Email, Occupation = @Occupation " +
+                    "where Id = @Id";
+
+                using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
+                {
+                    updateCommand.Parameters.AddWithValue("@Name", client.Name);
+                    updateCommand.Parameters.AddWithValue("@Email", client.Email);
+                    updateCommand.Parameters.AddWithValue("@Occupation", client.Occupation);
+                    updateCommand.Parameters.AddWithValue("@Id", id);
+
+                    updateCommand.ExecuteNonQuery();
+                }
+
+                connection.Close();
+                
+                // Should I also return the updated Employee record?
+                return StatusCode(StatusCodes.Status200OK);
+            }
+            catch (Exception ex)
+            {
+                //throw e??
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
 
 
 
