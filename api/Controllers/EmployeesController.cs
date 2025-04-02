@@ -151,7 +151,19 @@ namespace api.Controllers
             }
         }
 
+        [HttpDelete(Name = "DeleteEmployee")]
+        public IActionResult DeleteEmployee(int id)
+        {
+            // Find SQL object based on ID
+            SqlConnection connection = DatabaseConnect.SQLServerConnect(DatabaseConnect.sqlConnStr);
+            SqlCommand query = new SqlCommand("DELETE from master.dbo.Employees " +
+                "where Id = " + id.ToString(), connection);
+            connection.Open();
+            query.ExecuteNonQuery();
+            connection.Close();
 
+            return StatusCode(StatusCodes.Status200OK);
+        }
 
     }
 }
