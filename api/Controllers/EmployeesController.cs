@@ -1,7 +1,7 @@
 ﻿using api.DAL;
-using api.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc;
+using api.Models.SQL;
 
 
 namespace api.Controllers
@@ -15,12 +15,12 @@ namespace api.Controllers
            ^^ this seems safe but also super slow... */
 
         [HttpGet(Name = "GetEmployees")]
-        public ActionResult<List<Employee_SQL>> GetEmployees()
+        public ActionResult<List<Employee>> GetEmployees()
         {
             SqlConnection connection = DatabaseConnect.SQLServerConnect(DatabaseConnect.sqlConnStr);
 
             // Create a list of Client_SQLs
-            List<Employee_SQL> employees = new List<Employee_SQL>();
+            List<Employee> employees = new List<Employee>();
             string employeesJson = "";
 
             // Source: https://stackoverflow.com/questions/21709305/how-to-directly-execute-sql-query-in-c
@@ -31,7 +31,7 @@ namespace api.Controllers
             {
                 while (reader.Read())
                 {
-                    Employee_SQL client = new Employee_SQL();
+                    Employee client = new Employee();
                     client.Id = reader.GetInt32(0);
                     client.Name = reader.GetString(1);
                     client.Email = reader.GetString(2);
@@ -53,7 +53,7 @@ namespace api.Controllers
         public HttpResponseMessage CreateEmployee(string name, string email, string occupation)
         {
             // Create employee object
-            Employee_SQL employee = new Employee_SQL();
+            Employee employee = new Employee();
             employee.Name = name;
             employee.Email = email;
             employee.Occupation = occupation;
@@ -94,7 +94,7 @@ namespace api.Controllers
                 SqlConnection connection = DatabaseConnect.SQLServerConnect(DatabaseConnect.sqlConnStr);
                 SqlCommand query = new SqlCommand("SELECT Id, Name, Email, Occupation " +
                     "from master.dbo.Employees where Id = " + id.ToString(), connection);
-                Employee_SQL client = new Employee_SQL();
+                Employee client = new Employee();
                 connection.Open();
                 SqlDataReader reader = query.ExecuteReader();
 

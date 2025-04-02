@@ -1,7 +1,7 @@
-﻿using api.Models;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using Microsoft.Data.SqlClient;
+using api.Models.MongoDB;
 
 
 namespace api.DAL
@@ -13,7 +13,7 @@ namespace api.DAL
         private static string sqlConnStr_Win = "";
         private static string sqlConnStr_Mac = "";
         private static string mongoPwd = "";
-        public IMongoCollection<Client_Mongo>? _clientCollection;
+        public IMongoCollection<Client>? _clientCollection;
 
         // Constructor
         public DatabaseConnect()
@@ -93,7 +93,7 @@ namespace api.DAL
             //client.Settings.Credential = new MongoCredential( "willprakash";
 			IMongoDatabase db = client.GetDatabase("MainDB");
             db.RunCommand<BsonDocument>(new BsonDocument("ping",1));
-            _clientCollection = db.GetCollection<Client_Mongo>("Clients");
+            _clientCollection = db.GetCollection<Client>("Clients");
 
 			var test = _clientCollection.Find(x => x.name == "Will").ToList();
 
