@@ -18,6 +18,7 @@ namespace api.Controllers
             _dbContext = dbContext;
         }
 
+        [HttpGet]
         public List<Employee> GetEmployees()
         {
             List<Employee> employees = new List<Employee>();
@@ -29,6 +30,32 @@ namespace api.Controllers
             return employees;
         }
 
+        [HttpPut]
+        public void UpdateEmployee(Employee updatedEmployee)
+        {
+            //Employee employee = new Employee();
+            using (_dbContext)
+            {
+                //employee = _dbContext.Employees.Single(employee => employee.Id == emp.Id);
+                _dbContext.Employees.Update(updatedEmployee);
+                _dbContext.SaveChanges();
+            }
+        }
+
+        [HttpPost]
+        public void CreateEmployee()
+        {
+            Employee newEmployee = new Employee();
+        }
+
+        [HttpDelete]
+        public void DeleteEmployee(int id)
+        {
+            using (_dbContext)
+            {
+                //_dbContext.Employees.ExecuteDelete(employee => employee.Id == id);
+            }
+        }
 
     }
 }

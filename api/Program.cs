@@ -17,8 +17,20 @@ builder.Services.AddDbContext<SQL_DBContext>();
    and register them with the routing system. Minimal APIs, however, use a builder to directly create and register individual Endpoint instances.
  */
 builder.Services.AddEndpointsApiExplorer(); // by the above source, I shouldn't need this line...
+// Source: https://www.youtube.com/watch?v=m8224OuxzuY
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials();
+    });
+});
 
 var app = builder.Build();
+app.UseCors("CorsPolicy");
 
 // Configure routing format
 app.MapControllerRoute(
@@ -32,7 +44,7 @@ if (app.Environment.IsDevelopment()) { }
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
