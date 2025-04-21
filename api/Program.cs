@@ -1,4 +1,5 @@
 using api.DAL;
+using api.Models;
 
 /* Initializes a new instance of the WebApplicationBuilder class with preconfigured defaults
    The WebApplication class is used to configure the HTTP pipeline and routes */
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
    This method configures the MVC services for the commonly used features with controllers for an API.
    This combines the effects of AddMvcCore, AddApiExplorer, AddAuthorization, AddCors, AddDataAnnotations */
 builder.Services.AddControllers();
+builder.Services.AddDbContext<SQL_DBContext>();
 /* Source: https://stackoverflow.com/questions/71932980/what-is-addendpointsapiexplorer-in-asp-net-core-6
    Is for Minimal APIs whereas AddApiExplorer requires MVC Core. For API Projects, AddControllers() calls AddApiExplorer on your behalf.
    With the introduction of Endpoint Routing, everything in the routing system boils down to an Endpoint. ASP.NET Core

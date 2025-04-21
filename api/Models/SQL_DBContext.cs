@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using api.Models.SQL;
-//using System.Runtime.InteropServices;
+﻿using api.Models.SQL;
+using api.DAL;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace api.Models
@@ -9,13 +9,12 @@ namespace api.Models
     {
         // Tables
         public DbSet<Employee> Employees { get; set; }
-        // To Do: Add Expenses?
+        public DbSet<Expense> Expenses { get; set; }
 
         // Database provider
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //base.OnConfiguring(optionsBuilder);
-
+            optionsBuilder.UseSqlServer(DatabaseConnect.sqlConnStr);
         }
 
     }
