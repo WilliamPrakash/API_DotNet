@@ -3,6 +3,8 @@ using api.Models;
 using api.Models.SQL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
+using System.Text.Json;
 
 
 namespace api.Controllers
@@ -31,14 +33,34 @@ namespace api.Controllers
         }
 
         [HttpPut]
-        public void UpdateEmployee(Employee updatedEmployee)
+        public async void UpdateEmployee()
         {
-            //Employee employee = new Employee();
-            using (_dbContext)
+            // Get data from request body
+            string rawContent = string.Empty;
+            using (var reader = new StreamReader(Request.Body,
+                encoding: Encoding.UTF8,
+                detectEncodingFromByteOrderMarks: false))
             {
-                //employee = _dbContext.Employees.Single(employee => employee.Id == emp.Id);
-                _dbContext.Employees.Update(updatedEmployee);
-                _dbContext.SaveChanges();
+                rawContent = await reader.ReadToEndAsync();
+            }
+            Employee ?employeeUpdates = JsonSerializer.Deserialize<Employee>(rawContent);
+
+            if (employeeUpdates != null)
+            {
+                using (_dbContext)
+                {
+                    Employee employee = _dbContext.Employees.Single(employee => employee.Id == employeeUpdates.Id);
+                    employee.Name = employeeUpdates.Name != null ? employeeUpdates.Name : employee.Name;
+                    employee.Email = employeeUpdates.Email != null ? employeeUpdates.Email : employee.Name;
+                    employee.Occupation = employeeUpdates.Occupation != null ? employeeUpdates.Occupation : employee.Occupation;
+
+                    _dbContext.Employees.Update(employee);
+                    _dbContext.SaveChanges();
+                }
+            }
+            else
+            {
+                // error handling
             }
         }
 
