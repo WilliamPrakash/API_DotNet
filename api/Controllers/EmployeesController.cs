@@ -1,8 +1,6 @@
-﻿using api.DAL;
-using api.Models;
+﻿using api.Models;
 using api.Models.SQL;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Text.Json;
 
@@ -65,9 +63,30 @@ namespace api.Controllers
         }
 
         [HttpPost]
-        public void CreateEmployee()
+        public async void CreateEmployee()
         {
-            Employee newEmployee = new Employee();
+            string rawContent = string.Empty;
+            using (var reader = new StreamReader(Request.Body,
+                encoding: Encoding.UTF8,
+                detectEncodingFromByteOrderMarks: false))
+            {
+                rawContent = await reader.ReadToEndAsync();
+            }
+            Employee? newEmployee = JsonSerializer.Deserialize<Employee>(rawContent);
+            
+            if (newEmployee != null)
+            {
+                using (_dbContext)
+                {
+                    _dbContext.Employees.Add(newEmployee);
+                    _dbContext.SaveChanges();
+                }
+            }
+            else
+            {
+                // error handling
+            }
+
         }
 
         [HttpDelete]
