@@ -14,7 +14,8 @@ namespace api.Models
         // Database provider
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(DatabaseConnect.sqlConnStr);
+            DatabaseConnect databaseConnect = new DatabaseConnect();
+            optionsBuilder.UseSqlServer(databaseConnect.sqlConnStr);
         }
 
     }

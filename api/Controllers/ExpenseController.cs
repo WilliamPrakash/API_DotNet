@@ -10,11 +10,13 @@ namespace api.Controllers
     [Route("api/[controller]/[action]")]
     public class ExpenseController : Controller
     {
+        DatabaseConnect databaseConnect = new DatabaseConnect();
+
         // GET: /<controller>/
         [HttpGet(Name = "GetExpenses")]
         public ActionResult<List<Expense>> GetExpenses()
         {
-            SqlConnection connection = new SqlConnection(DatabaseConnect.sqlConnStr);
+            SqlConnection connection = new SqlConnection(databaseConnect.sqlConnStr);
             List<Expense> expenses = new List<Expense>();
             try
             {

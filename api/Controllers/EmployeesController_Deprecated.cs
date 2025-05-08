@@ -10,10 +10,12 @@ namespace api.Controllers
     [Route("api/[controller]/[action]")]
     public class EmployeesController_Deprecated : Controller
     {
+        DatabaseConnect databaseConnect = new DatabaseConnect();
+
         [HttpGet(Name = "GetEmployees")]
         public ActionResult<List<Employee>> GetEmployees()
         {
-            SqlConnection connection = new SqlConnection(DatabaseConnect.sqlConnStr);
+            SqlConnection connection = new SqlConnection(databaseConnect.sqlConnStr);
 
             // Create a list of Client_SQLs
             List<Employee> employees = new List<Employee>();
@@ -42,52 +44,13 @@ namespace api.Controllers
             }
         }
 
-        /* Getting args: https://stackoverflow.com/questions/25385559/rest-api-best-practices-args-in-query-string-vs-in-request-body
-            Usually the content body is used for the data that is supposed to be uploaded/downloaded to/from
-            the server ,and the query parameters are used to specify the exact data requested. */
-        [HttpPut(Name = "CreateEmployee")]
-        public HttpResponseMessage CreateEmployee(string name, string email, string occupation)
-        {
-            // Create employee object
-            Employee employee = new Employee();
-            employee.Name = name;
-            employee.Email = email;
-            employee.Occupation = occupation;
-
-            SqlConnection connection = new SqlConnection(DatabaseConnect.sqlConnStr);
-
-            /// Source: https://stackoverflow.com/questions/19956533/sql-insert-query-using-c-sharp
-            using (connection)
-            {
-                string query = "INSERT INTO Master.dbo.Employees (Name,Email,Occupation) VALUES (@Name,@Email, @Occupation)";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    //command.Parameters.AddWithValue("@id", employee.Id);
-                    command.Parameters.AddWithValue("@Name", employee.Name);
-                    command.Parameters.AddWithValue("@Email", employee.Email);
-                    command.Parameters.AddWithValue("@Occupation", employee.Occupation);
-
-                    connection.Open();
-                    int result = command.ExecuteNonQuery();
-
-                    // Check Error
-                    if (result < 0)
-                        Console.WriteLine("Error inserting data into Database!");
-                    
-                    connection.Close();
-                }
-            }
-            return new HttpResponseMessage(new System.Net.HttpStatusCode()); // OK
-        }
-
-        [HttpPost(Name = "UpdateEmployee")]
+        [HttpPut(Name = "UpdateEmployee")]
         public IActionResult UpdateEmployee(int id, string? nameNew, string? emailNew, string? occupationNew)
         {
             try
             {
                 // Find SQL object based on ID
-                SqlConnection connection = new SqlConnection(DatabaseConnect.sqlConnStr);
+                SqlConnection connection = new SqlConnection(databaseConnect.sqlConnStr);
                 SqlCommand query = new SqlCommand("SELECT Id, Name, Email, Occupation " +
                     "from master.dbo.Employees where Id = " + id.ToString(), connection);
                 Employee client = new Employee();
@@ -135,7 +98,7 @@ namespace api.Controllers
                 }
 
                 connection.Close();
-                
+
                 // Should I also return the updated Employee record?
                 return StatusCode(StatusCodes.Status200OK);
             }
@@ -147,11 +110,50 @@ namespace api.Controllers
             }
         }
 
+        /* Getting args: https://stackoverflow.com/questions/25385559/rest-api-best-practices-args-in-query-string-vs-in-request-body
+            Usually the content body is used for the data that is supposed to be uploaded/downloaded to/from
+            the server ,and the query parameters are used to specify the exact data requested. */
+        [HttpPost(Name = "CreateEmployee")]
+        public HttpResponseMessage CreateEmployee(string name, string email, string occupation)
+        {
+            // Create employee object
+            Employee employee = new Employee();
+            employee.Name = name;
+            employee.Email = email;
+            employee.Occupation = occupation;
+
+            SqlConnection connection = new SqlConnection(databaseConnect.sqlConnStr);
+
+            /// Source: https://stackoverflow.com/questions/19956533/sql-insert-query-using-c-sharp
+            using (connection)
+            {
+                string query = "INSERT INTO Master.dbo.Employees (Name,Email,Occupation) VALUES (@Name,@Email, @Occupation)";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    //command.Parameters.AddWithValue("@id", employee.Id);
+                    command.Parameters.AddWithValue("@Name", employee.Name);
+                    command.Parameters.AddWithValue("@Email", employee.Email);
+                    command.Parameters.AddWithValue("@Occupation", employee.Occupation);
+
+                    connection.Open();
+                    int result = command.ExecuteNonQuery();
+
+                    // Check Error
+                    if (result < 0)
+                        Console.WriteLine("Error inserting data into Database!");
+                    
+                    connection.Close();
+                }
+            }
+            return new HttpResponseMessage(new System.Net.HttpStatusCode()); // OK
+        }
+
         [HttpDelete(Name = "DeleteEmployee")]
         public IActionResult DeleteEmployee(int id)
         {
             // Find SQL object based on ID
-            SqlConnection connection = new SqlConnection(DatabaseConnect.sqlConnStr);
+            SqlConnection connection = new SqlConnection(databaseConnect.sqlConnStr);
             SqlCommand query = new SqlCommand("DELETE from master.dbo.Employees " +
                 "where Id = " + id.ToString(), connection);
             connection.Open();

@@ -1,23 +1,19 @@
-﻿using MongoDB.Driver;
-using api.Models.MongoDB;
+﻿using System.Text.Json;
+using System.Runtime.InteropServices;
 
 
 namespace api.DAL
 {
-	public class DatabaseConnect
-	{
+    public class DatabaseConnect
+    {
         Dictionary<string, string>? localCredentials;
-        public static string sqlConnStr = "";
-        private static string sqlConnStr_Win = "";
-        private static string sqlConnStr_Mac = "";
-        private static string mongoPwd = "";
-        public IMongoCollection<Client>? _clientCollection;
+        public string sqlConnStr = "";
+        private string sqlConnStr_Win = "";
+        private string sqlConnStr_Mac = "";
 
-        // Only one instance gets created in Program.cs
         public DatabaseConnect()
         {
-            GrabLocalDatabaseCredentials creds = new GrabLocalDatabaseCredentials();
-            localCredentials = creds.OpenLocalAuthFile();
+            localCredentials = OpenLocalAuthFile();
 
             // If no DB credentials are found, shut down the application
             if (localCredentials == null || localCredentials.Count == 0) { System.Environment.Exit(1); }
@@ -26,9 +22,6 @@ namespace api.DAL
             {
                 switch (localCredentials.ElementAt(i).Key)
                 {
-                    case "MongoDB":
-                        mongoPwd = localCredentials.ElementAt(i).Value;
-                        break;
                     case "SQLServer_Win":
                         sqlConnStr_Win = localCredentials.ElementAt(i).Value;
                         break;
@@ -44,9 +37,43 @@ namespace api.DAL
             {
                 sqlConnStr = sqlConnStr_Mac;
             }
-            Console.WriteLine("SQL connection string set");
-            //Console.WriteLine("DB credentials parsed/established/whatever...");
+            Console.WriteLine("Main SQL connection string set");
         }
-	}
-}
 
+        private Dictionary<string, string> OpenLocalAuthFile()
+        {
+            Console.WriteLine("Attempting to grab DB credentials from local credentials.json...");
+
+            // Path depends on which computer I'm developing on
+            string path = "C:/Users/willi/Desktop/credentials.json";
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                path = @"/Users/williamprakash/Desktop/credentials.json";
+            }
+
+            // Attempt to grab credentials
+            if (File.Exists(path))
+            {
+                string jsonToParse = File.ReadAllText(path);
+                Dictionary<string, string>? dict = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonToParse);
+
+                // If nothing was found in credentials.json, return an empty dictionary
+                if (dict == null)
+                {
+                    Console.WriteLine(path + " contains no credentials.");
+                    return new Dictionary<string, string> { { "", "" } };
+                }
+                ;
+
+                Console.WriteLine("DB credentials grabbed.");
+                return dict;
+            }
+            else // Path to credentials.json not found
+            {
+                Console.WriteLine(path + " not found.");
+                return new Dictionary<string, string>();
+            }
+        }
+
+    }
+}
