@@ -1,12 +1,12 @@
-﻿using api.DAL;
+﻿using API.DAL;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc;
-using api.Models.SQL;
+using API.Models.SQL;
 
-namespace api.Controllers;
+namespace API.Controllers;
 
 [ApiController]
-[Route("api/[controller]/[action]")]
+[Route("API/[controller]/[action]")]
 public class ExpenseController : Controller
 {
     DatabaseConnect databaseConnect = new DatabaseConnect();

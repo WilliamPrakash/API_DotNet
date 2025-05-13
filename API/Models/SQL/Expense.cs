@@ -1,5 +1,5 @@
 ﻿
-namespace api.Models.SQL;
+namespace API.Models.SQL;
 
 public class Expense
 {

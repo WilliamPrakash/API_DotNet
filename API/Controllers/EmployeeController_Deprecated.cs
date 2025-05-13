@@ -1,12 +1,12 @@
-﻿using api.DAL;
+﻿using API.DAL;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc;
-using api.Models.SQL;
+using API.Models.SQL;
 
-namespace api.Controllers;
+namespace API.Controllers;
 
 [ApiController]
-[Route("api/[controller]/[action]")]
+[Route("API/[controller]/[action]")]
 public class EmployeeController_Deprecated : Controller
 {
     DatabaseConnect databaseConnect = new DatabaseConnect();
@@ -109,7 +109,7 @@ public class EmployeeController_Deprecated : Controller
         }
     }
 
-    /* Getting args: https://stackoverflow.com/questions/25385559/rest-api-best-practices-args-in-query-string-vs-in-request-body
+    /* Getting args: https://stackoverflow.com/questions/25385559/rest-API-best-practices-args-in-query-string-vs-in-request-body
         Usually the content body is used for the data that is supposed to be uploaded/downloaded to/from
         the server ,and the query parameters are used to specify the exact data requested. */
     [HttpPost(Name = "CreateEmployee")]

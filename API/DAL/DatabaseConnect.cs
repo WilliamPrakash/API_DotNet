@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 
 
-namespace api.DAL;
+namespace API.DAL;
 
 public class DatabaseConnect
 {

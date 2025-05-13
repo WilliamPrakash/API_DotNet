@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "api": {
+    "API": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "index.html",

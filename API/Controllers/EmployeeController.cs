@@ -1,14 +1,14 @@
-﻿using api.Models;
-using api.Models.SQL;
+﻿using API.Models;
+using API.Models.SQL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Text.Json;
 
-namespace api.Controllers;
+namespace API.Controllers;
 
 [ApiController]
-[Route("api/[controller]/[action]")]
+[Route("API/[controller]/[action]")]
 public class EmployeeController : Controller
 {
     private readonly SQL_DBContext _dbContext;

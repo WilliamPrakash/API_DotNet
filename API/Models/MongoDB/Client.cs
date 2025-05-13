@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 // BSON: binary JSON
 
-namespace api.Models.MongoDB;
+namespace API.Models.MongoDB;
 
 	public class Client
 	{

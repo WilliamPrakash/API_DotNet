@@ -1,8 +1,8 @@
-﻿using api.Models.SQL;
-using api.DAL;
+﻿using API.Models.SQL;
+using API.DAL;
 using Microsoft.EntityFrameworkCore;
 
-namespace api.Models;
+namespace API.Models;
 
 public class SQL_DBContext : DbContext
 {
