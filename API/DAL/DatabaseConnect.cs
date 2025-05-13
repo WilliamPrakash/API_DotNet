@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
 using System.Runtime.InteropServices;
 
-
 namespace API.DAL;
 
 public class DatabaseConnect
