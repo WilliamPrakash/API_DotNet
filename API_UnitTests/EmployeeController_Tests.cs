@@ -1,10 +1,10 @@
 using API.Controllers;
 using API.Models;
 using API.Models.SQL;
+//using System.Net.Http; ?
 using System.Text.Json;
-using System.Text.Unicode;
-using System.Runtime.CompilerServices;
 using System.Diagnostics;
+using System.Net.Http.Json;
 
 namespace API_UnitTests;
 
@@ -18,44 +18,56 @@ public class Tests
     public void Setup()
     {
         apiExecutable = Process.Start(dir + "//API.exe");
-        /* Now listening on: http://localhost:5000 */
+        /* ^Now listening on: http://localhost:5000 */
 
-        // Initialize Context + Controller
         SQL_DBContext dBContext = new SQL_DBContext();
-        empController = new EmployeeController(dBContext);
+        this.empController = new EmployeeController(dBContext);
     }
 
     #region Tests
     [Test]
-    public async Task GetEmployees_Test() // HTTP GET
+    public void GetEmployees_Test() // HTTP GET
     {
-
-
-        Assert.Fail();
+        List<Employee> employees = this.empController.GetEmployees();
+        Assert.IsTrue(employees.Count > 0);
     }
 
     [Test]
     public void UpdateEmployee_Test() // HTTP PUT
     {
-        // Create test Employee to add to DB
-        Employee employee = new Employee();
-        employee.Name = "GetEmployees_Test() insert";
-        employee.Email = "GetEmployees_Test() insert";
-        employee.Occupation = "GetEmployees_Test() insert";
-        /*using (var client = new HttpClient())
-        {
-            client.BaseAddress = new Uri("http://127.0.0.1:5215/api/Employee/UpdateEmployee");
-            //client.DefaultRequestHeaders
-        }*/
+        
 
         Assert.Pass();
     }
 
     [Test]
-    public void CreateEmployee_Test() // HTTP POST
+    public async Task CreateEmployee_Test() // HTTP POST
     {
-
-        Assert.Pass();
+        using (HttpClient client = new HttpClient())
+        {
+            // https://stackoverflow.com/questions/15176538/net-httpclient-how-to-post-string-value
+            client.BaseAddress = new Uri("http://localhost:5000");
+            /*FormUrlEncodedContent content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("Name", "Sfyaisodfkawjneriwahu"),
+                new KeyValuePair<string, string>("Email", "GmailYahooAOL"),
+                new KeyValuePair<string, string>("Occupation", "beekeeper")
+            });*/
+            Employee testEmployee = new Employee()
+            {
+                Name = "Sfyaisodfkawjneriwahu",
+                Email = "GmailYahooAOL",
+                Occupation = "beekeeper"
+            };
+            string jsonEmployee = JsonSerializer.Serialize(testEmployee);
+            var response = await client.PostAsJsonAsync("/api/Employee/CreateEmployee", jsonEmployee);
+            //var content = new FormUrlEncodedContent(testEmployee);
+            //var response = await client.PostAsync("/api/Employee/CreateEmployee", content);
+            var result = await response.Content.ReadAsStringAsync();
+            Console.WriteLine();
+        }
+        
+        Assert.Fail();
     }
 
     [Test]
@@ -66,6 +78,7 @@ public class Tests
     }
     #endregion
 
+    [Test]
     [TearDown]
     public void TearDown()
     {

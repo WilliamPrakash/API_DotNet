@@ -65,7 +65,7 @@ public class EmployeeController : Controller
 
     /* is "async void" a problem? https://stackoverflow.com/questions/55543595/cannot-access-a-disposed-object-a-common-cause-of-this-error-is-disposing-a-con */
     [HttpPost]
-    public async void CreateEmployee() // Recieves a JSON Employee model
+    public async Task CreateEmployee() // Recieves a JSON Employee model
     {
         string rawContent = string.Empty;
         using (var reader = new StreamReader(Request.Body,
