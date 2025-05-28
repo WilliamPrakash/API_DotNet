@@ -31,7 +31,7 @@ public class EmployeeController : Controller
     }
 
     [HttpPut]
-    public async void UpdateEmployee() // Recieves a JSON Employee model
+    public async Task UpdateEmployee() // Recieves a JSON Employee model
     {
         /* TODO: wrap the json deserializing logic in a try/catch */
         // Get data from request body

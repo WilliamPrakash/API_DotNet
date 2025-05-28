@@ -1,9 +1,9 @@
 using API.Controllers;
 using API.Models;
 using API.Models.SQL;
-//using System.Net.Http; ?
 using System.Text.Json;
 using System.Diagnostics;
+using System.Text;
 using System.Net.Http.Json;
 
 namespace API_UnitTests;
@@ -33,11 +33,24 @@ public class Tests
     }
 
     [Test]
-    public void UpdateEmployee_Test() // HTTP PUT
+    public async Task UpdateEmployee_Test() // HTTP PUT
     {
-        
+        using (HttpClient client = new HttpClient())
+        {
+            client.BaseAddress = new Uri("http://localhost:5000/api/Employee/UpdateEmployee");
+            string jsonEmployee = JsonSerializer.Serialize(new Employee()
+            {
+                Id = 1016,
+                Name = "Updated via unit test",
+                Email = "Updated via unit test",
+                Occupation = "Updated via unit test"
+            });
 
-        Assert.Pass();
+            using StringContent jsonContent = new StringContent(jsonEmployee, Encoding.UTF8, "application/json");
+            using HttpResponseMessage res = await client.PutAsync(client.BaseAddress, jsonContent);
+
+            Assert.IsTrue(res.StatusCode == System.Net.HttpStatusCode.OK);
+        }
     }
 
     [Test]
@@ -45,29 +58,21 @@ public class Tests
     {
         using (HttpClient client = new HttpClient())
         {
-            // https://stackoverflow.com/questions/15176538/net-httpclient-how-to-post-string-value
-            client.BaseAddress = new Uri("http://localhost:5000");
-            /*FormUrlEncodedContent content = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("Name", "Sfyaisodfkawjneriwahu"),
-                new KeyValuePair<string, string>("Email", "GmailYahooAOL"),
-                new KeyValuePair<string, string>("Occupation", "beekeeper")
-            });*/
-            Employee testEmployee = new Employee()
+            client.BaseAddress = new Uri("http://localhost:5000/api/Employee/CreateEmployee");
+            string jsonEmployee = JsonSerializer.Serialize(new Employee()
             {
                 Name = "Sfyaisodfkawjneriwahu",
                 Email = "GmailYahooAOL",
                 Occupation = "beekeeper"
-            };
-            string jsonEmployee = JsonSerializer.Serialize(testEmployee);
-            var response = await client.PostAsJsonAsync("/api/Employee/CreateEmployee", jsonEmployee);
-            //var content = new FormUrlEncodedContent(testEmployee);
-            //var response = await client.PostAsync("/api/Employee/CreateEmployee", content);
-            var result = await response.Content.ReadAsStringAsync();
-            Console.WriteLine();
+            });
+
+            // Create request
+            // source: https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient
+            using StringContent jsonContent = new StringContent(jsonEmployee, Encoding.UTF8, "application/json");
+            using HttpResponseMessage res = await client.PostAsync(client.BaseAddress, jsonContent);
+
+            Assert.IsTrue(res.StatusCode == System.Net.HttpStatusCode.OK);
         }
-        
-        Assert.Fail();
     }
 
     [Test]
@@ -78,7 +83,6 @@ public class Tests
     }
     #endregion
 
-    [Test]
     [TearDown]
     public void TearDown()
     {
@@ -87,3 +91,10 @@ public class Tests
         empController.Dispose();
     }
 }
+
+/*FormUrlEncodedContent content = new FormUrlEncodedContent(new[]
+{
+    new KeyValuePair<string, string>("Name", "Sfyaisodfkawjneriwahu"),
+    new KeyValuePair<string, string>("Email", "GmailYahooAOL"),
+    new KeyValuePair<string, string>("Occupation", "beekeeper")
+});*/
